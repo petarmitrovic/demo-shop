@@ -90,8 +90,8 @@ class ProductController {
     ResponseEntity<ProductDto> update(@RequestBody ProductCommand command) {
         return this.productRepository.findActiveBySku(command.getSku())
                 .map(prod -> {
-                    prod.setName(command.getName());
-                    prod.setPrice(command.getPrice());
+                    if (command.getName() != null) { prod.setName(command.getName()); }
+                    if (command.getPrice() != null) { prod.setPrice(command.getPrice()); }
                     return ResponseEntity.ok(toDto(productRepository.save(prod)));
                 })
                 .orElse(ResponseEntity.notFound().build());

@@ -15,13 +15,16 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(unique = true)
     private UUID sku;
-    @Column
+
     private String name;
-    @Column
+
     private LocalDate createdOn;
+
     private BigDecimal price;
+
     private boolean active = true;
 
     public Product() { }

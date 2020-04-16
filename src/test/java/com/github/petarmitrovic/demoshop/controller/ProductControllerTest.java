@@ -47,7 +47,6 @@ class ProductControllerTest {
     void setUpRestAssured() {
         RestAssured.baseURI = "http://localhost:" + port;
         RestAssured.defaultParser = Parser.JSON;
-//        RestAssured.config().jsonConfig(jsonConfig().numberReturnType(JsonPathConfig.NumberReturnType.BIG_DECIMAL));
     }
 
     @BeforeEach

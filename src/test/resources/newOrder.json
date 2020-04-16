@@ -1,0 +1,13 @@
+{
+  "email": "someone@email.com",
+  "items": [
+    {
+      "product": "245b6b69-8bd2-4c60-876e-ac81f60d9405",
+      "amount": 2
+    },
+    {
+      "product": "f914eeb9-a6f3-4950-9c5a-4a83f1b66656",
+      "amount": 1
+    }
+  ]
+}

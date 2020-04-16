@@ -3,12 +3,23 @@ package com.github.petarmitrovic.demoshop.dto;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(value = "Product", description = "Product details")
 public class ProductDto {
 
+    @ApiModelProperty(notes = "Stock keeping unit, a unique id of the product.")
     private String sku;
+
+    @ApiModelProperty(notes = "Product name")
     private String name;
-    private LocalDate createdOn;
+
+    @ApiModelProperty(notes = "Product price")
     private BigDecimal price;
+
+    @ApiModelProperty(notes = "Product creation date")
+    private LocalDate createdOn;
 
     public ProductDto() {
     }

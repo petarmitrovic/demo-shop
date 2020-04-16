@@ -7,10 +7,8 @@ import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
@@ -18,7 +16,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,11 +24,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import com.github.petarmitrovic.demoshop.dto.ProductDto;
 import com.github.petarmitrovic.demoshop.entity.Product;
 import com.github.petarmitrovic.demoshop.repository.ProductRepository;
 
 import io.restassured.RestAssured;
-import io.restassured.config.JsonConfig;
 import io.restassured.http.ContentType;
 import io.restassured.parsing.Parser;
 import io.restassured.path.json.config.JsonPathConfig;
@@ -104,7 +101,7 @@ class ProductControllerTest {
 
     @Test
     public void itShouldAddNewProduct() throws Exception {
-        String sku = given()
+        ProductDto createdProduct = given()
             .body(readFile("/newProduct.json"))
             .contentType(ContentType.JSON)
             .post("/products")
@@ -113,14 +110,28 @@ class ProductControllerTest {
             .extract()
             .response()
             .body()
-            .asString();
+            .as(ProductDto.class);
 
         assertEquals(5, productRepository.count());
 
-        Product product = productRepository.findActiveBySku(sku).get();
+        Product product = productRepository.findActiveBySku(createdProduct.getSku()).get();
 
         assertEquals("New product", product.getName());
         assertEquals(new BigDecimal("13.70"), product.getPrice());
+    }
+
+    @Test
+    public void itShouldUpdateProduct() throws Exception {
+        given()
+            .body(readFile("/editProduct.json"))
+            .contentType(ContentType.JSON)
+            .put("/products")
+        .then()
+            .statusCode(200);
+
+        Product updatedProduct = productRepository.findActiveBySku("909b1d2d-bc28-416a-9d75-bd2798b206c8").get();
+        assertEquals("Updated product", updatedProduct.getName());
+        assertEquals(new BigDecimal("15.10"), updatedProduct.getPrice());
     }
 
     @Test
